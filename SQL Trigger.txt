@@ -1,0 +1,22 @@
+DECLARE current_id INT;
+
+SET current_id = 
+   (SELECT MAX(Customers.CustomerID)
+     FROM  Customers) 
+        + 1;      // Add 1 to create next Unique ID since IDs are not in order
+
+
+CREATE OR UPDATE TRIGGER ON INSERT (
+
+IF Customers.FirstName AS "unique_firstName", Customers.LastName AS "lastName" AS "unique_LastName" NOT IN 
+(SELECT FirstName, LastName 
+    FROM Customers)
+THEN
+  INSERT INTO Customers
+   VALUES (current_id, FirstName, LastName)
+   WHERE Customers.CustomerID = current_id;
+
+)
+
+
+   
